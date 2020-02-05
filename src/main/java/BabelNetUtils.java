@@ -11,15 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * A demo class to test {@link BabelNet}'s various features.
- *
- * @author cecconi, navigli, vannella
- * @see it.uniroma1.lcl.babelnet.test.BabelNetTest
- * @see it.uniroma1.lcl.babelnet.test.BabelSenseTest
- * @see it.uniroma1.lcl.babelnet.test.BabelSynsetTest
- */
-public class BabelNetDemo {
+public class BabelNetUtils {
     /**
      * A demo to see the senses of a word.
      *
@@ -120,16 +112,19 @@ public class BabelNetDemo {
      * @param synsetId the synset ID to test
      */
     public static void testGraph(BabelSynsetID synsetId) {
-        List<BabelSynsetRelation> successorsEdges = synsetId.getOutgoingEdges();
+        if (synsetId != null && synsetId.getOutgoingEdges() != null) {
+            List<BabelSynsetRelation> successorsEdges = synsetId.getOutgoingEdges();
 
-        System.out.println("SYNSET ID:" + synsetId);
-        System.out.println("# OUTGOING EDGES: " + successorsEdges.size());
+            System.out.println("SYNSET ID:" + synsetId);
+            System.out.println("# OUTGOING EDGES: " + successorsEdges.size());
 
-        for (BabelSynsetRelation edge : successorsEdges) {
-            System.out.println("\tEDGE " + edge);
-            System.out.println("\t" + edge.getBabelSynsetIDTarget().toSynset().toString(Language.EN));
-            System.out.println();
+            for (BabelSynsetRelation edge : successorsEdges) {
+                System.out.println("\tEDGE " + edge);
+                System.out.println("\t" + edge.getBabelSynsetIDTarget().toSynset().toString(Language.EN));
+                System.out.println();
+            }
         }
+
     }
 
     /**
@@ -143,7 +138,7 @@ public class BabelNetDemo {
                                         Language... languagesToPrint) {
         List<Language> allowedLanguages = Arrays.asList(languagesToPrint);
         Multimap<Language, ScoredItem<String>> translations =
-                BabelNetUtils.getTranslations(languageToSearch, lemma);
+                it.uniroma1.lcl.babelnet.BabelNetUtils.getTranslations(languageToSearch, lemma);
 
         System.out.println("TRANSLATIONS FOR " + lemma);
         for (Language language : translations.keySet()) {
